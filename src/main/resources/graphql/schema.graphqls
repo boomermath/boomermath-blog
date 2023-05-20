@@ -1,0 +1,10 @@
+type Query {
+    login(nameOrEmail: String!, password: String!): [BlogUser]!
+    signup(username: String!, email: String!, password: String!) : [BlogUser]!
+}
+
+type BlogUser {
+    id: ID!,
+    username: String,
+    email: String
+}

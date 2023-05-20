@@ -1,29 +1,30 @@
 package com.example.boomermathblog.data.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
-@Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BlogComment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Column(nullable = false)
     private String comment;
 
-    @OneToOne
+    @ManyToOne
+    @ToString.Exclude
     private BlogUser blogUser;
 
     @ManyToOne
+    @ToString.Exclude
     private BlogArticle blogArticle;
 }

@@ -1,6 +1,7 @@
 package com.example.boomermathblog.data.values;
 
-public enum ArticlesRoles {
+public enum BlogArticleRoles {
     OWNER,
-    EDITOR
+    EDITOR,
+    ADMIN
 }

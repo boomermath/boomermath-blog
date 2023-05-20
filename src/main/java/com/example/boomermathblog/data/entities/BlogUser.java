@@ -4,22 +4,21 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BlogUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @NotEmpty(message = "Specify a username")
@@ -36,7 +35,4 @@ public class BlogUser {
     @Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
     @Column(nullable = false)
     private String password;
-
-    @OneToMany(mappedBy = "blogUser")
-    private List<BlogUserArticles> blogUserArticles;
 }

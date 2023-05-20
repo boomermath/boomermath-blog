@@ -2,27 +2,28 @@ package com.example.boomermathblog.data.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BlogArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @NotEmpty(message = "Specify a title")
     @Size(min = 8, max = 20, message = "Title must be between 8 and 20 characters")
+    @Pattern(regexp = "[A-Z0-9]+", message = "Only letters and numbers are allowed!")
     @Column(nullable = false, unique = true)
     private String title;
 
@@ -32,7 +33,7 @@ public class BlogArticle {
     private String description;
 
     @NotEmpty(message = "Put something in your blog article")
-    @Lob
+    @Column(columnDefinition = "text")
     private String content;
 
     @Column(nullable = false)
@@ -40,8 +41,9 @@ public class BlogArticle {
     private int likes = 0;
 
     @OneToMany(mappedBy = "blogArticle")
+    @ToString.Exclude
     private List<BlogUserArticles> blogUserArticles;
-
-    @OneToMany(mappedBy = "blogArticle")
-    private List<BlogComment> blogComments;
+    public String getSlug() {
+        return title.toLowerCase().trim().replaceAll("\\s+", "-");
+    }
 }
