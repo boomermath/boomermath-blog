@@ -3,6 +3,7 @@ package com.example.boomermathblog.data.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,20 +13,16 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class BlogComment {
+public class BlogTag {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Column(nullable = false)
-    private String comment;
+    private String description;
 
-    @ManyToOne
+    @ManyToMany
     @ToString.Exclude
-    private BlogUser blogUser;
-
-    @ManyToOne
-    @ToString.Exclude
-    private BlogArticle article;
+    private List<BlogArticle> article;
 }

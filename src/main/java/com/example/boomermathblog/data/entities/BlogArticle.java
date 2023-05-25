@@ -1,14 +1,19 @@
 package com.example.boomermathblog.data.entities;
 
+import com.example.boomermathblog.data.values.ArticleStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @ToString
@@ -27,6 +32,9 @@ public class BlogArticle {
     @Column(nullable = false, unique = true)
     private String title;
 
+    @Transient
+    private String slug;
+
     @NotEmpty(message = "Specify a description")
     @Size(min = 40, max = 1000, message = "Title must be between 40 and 1000 characters")
     @Column(nullable = false)
@@ -40,10 +48,39 @@ public class BlogArticle {
     @Builder.Default
     private int likes = 0;
 
-    @OneToMany(mappedBy = "blogArticle")
-    @ToString.Exclude
-    private List<BlogUserArticles> blogUserArticles;
-    public String getSlug() {
-        return title.toLowerCase().trim().replaceAll("\\s+", "-");
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ArticleStatus status;
+
+    @OneToMany
+    private List<BlogComment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "blog_article_tags",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<BlogTag> tags;
+
+    @ManyToMany
+    @JoinTable(
+            name="blog_article_editors",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<BlogUser> editors;
+
+    @CreatedDate
+    private LocalDate createdDate;
+
+    @LastModifiedDate
+    private LocalDate lastModified;
+
+    @ManyToOne
+    private BlogUser author;
+    @PostLoad
+    private void loadSlug() {
+        slug = title.toLowerCase().replaceAll("\\s+", "");
     }
 }

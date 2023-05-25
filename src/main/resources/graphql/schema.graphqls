@@ -1,10 +1,20 @@
 type Query {
-    login(nameOrEmail: String!, password: String!): [BlogUser]!
-    signup(username: String!, email: String!, password: String!) : [BlogUser]!
+    login(loginData: LoginData!): JwtResponse
+    register(registerData: RegisterData) : JwtResponse
 }
 
-type BlogUser {
-    id: ID!,
-    username: String,
-    email: String
+
+input LoginData {
+    nameOrEmail: String!
+    password: String!
+}
+
+input RegisterData {
+    username: String!
+    email: String!
+    password: String!
+}
+
+type JwtResponse {
+    token: String!
 }

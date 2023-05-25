@@ -1,5 +1,6 @@
 package com.example.boomermathblog.data.entities;
 
+import com.example.boomermathblog.data.values.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @ToString
@@ -32,7 +34,15 @@ public class BlogUser {
     private String email;
 
     @NotEmpty(message = "Specify a password")
-    @Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @OneToMany(mappedBy = "id")
+    private List<BlogArticle> ownedArticles;
+
+    @ManyToMany
+    private List<BlogArticle> editableArticles;
 }
