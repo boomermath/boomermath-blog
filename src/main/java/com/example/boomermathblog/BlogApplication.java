@@ -1,11 +1,18 @@
 package com.example.boomermathblog;
 
+import com.example.boomermathblog.data.entities.BlogArticle;
+import com.example.boomermathblog.data.entities.BlogUser;
+import com.example.boomermathblog.data.repositories.BlogArticleRepository;
+import com.example.boomermathblog.data.repositories.BlogUserRepository;
+import com.example.boomermathblog.data.values.ArticleStatus;
+import com.example.boomermathblog.data.values.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -15,5 +22,44 @@ import java.util.Optional;
 public class BlogApplication {
     public static void main(String[] args) {
         SpringApplication.run(BlogApplication.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(BlogUserRepository blogUserRepository, BlogArticleRepository blogArticleRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            Optional<BlogUser> optionalBlogUser = blogUserRepository.findBlogUserByUsername("boomermath");
+            BlogUser blogUser;
+
+            if (optionalBlogUser.isEmpty()) {
+                BlogUser boomermath = BlogUser.builder()
+                        .username("boomermath")
+                        .role(UserRole.USER)
+                        .email("boomermath@gmail.com")
+                        .password(passwordEncoder.encode("DAONE364"))
+                        .build();
+                blogUser = blogUserRepository.save(boomermath);
+            } else {
+                return;
+            }
+
+            BlogArticle blogArticle1 = BlogArticle.builder()
+                    .title("First")
+                    .description("asdfasdfasdfasdfsdfasdfsafsdfasdff")
+                    .content("veyr coolas dfjasdiofjasf")
+                    .status(ArticleStatus.PUBLISHED)
+                    .author(blogUser)
+                    .build();
+
+            BlogArticle blogArticle2 = BlogArticle.builder()
+                    .title("Second")
+                    .description("asdfasdfasdfasdfsdfasdfsafsdfasdff")
+                    .content("veyr coolas dfjasdiofjasf")
+                    .status(ArticleStatus.PUBLISHED)
+                    .author(blogUser)
+                    .build();
+
+            blogArticleRepository.save(blogArticle1);
+            blogArticleRepository.save(blogArticle2);
+        };
     }
 }

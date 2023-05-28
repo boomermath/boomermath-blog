@@ -18,8 +18,7 @@ import java.util.UUID;
 public class BlogJwtUtils {
     public static final String HEADER_PREFIX = "Bearer";
     public static final int EXPIRY_TIME_DAYS = 7;
-
-    private static final String secret = UUID.randomUUID().toString();
+    private static final String secret = "9613a021-1fb7-4d8d-9854-e13c31659d31";
 
     public String generate(UUID id, String role) {
         return JWT

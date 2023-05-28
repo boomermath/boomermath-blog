@@ -1,8 +1,21 @@
 type Query {
-    login(loginData: LoginData!): JwtResponse
-    register(registerData: RegisterData) : JwtResponse
+    login(loginData: LoginData!): JwtToken
+    register(registerData: RegisterData!) : JwtToken
+    popularArticles: [BlogArticle]
 }
 
+type BlogArticle {
+    title: String
+    slug: String
+    description: String
+    content: String
+    likes: Int,
+    author: BlogUser
+}
+
+type BlogUser {
+    username: String
+}
 
 input LoginData {
     nameOrEmail: String!
@@ -15,6 +28,6 @@ input RegisterData {
     password: String!
 }
 
-type JwtResponse {
+type JwtToken {
     token: String!
 }

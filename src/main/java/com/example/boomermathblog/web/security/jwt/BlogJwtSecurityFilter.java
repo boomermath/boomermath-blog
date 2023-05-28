@@ -36,7 +36,7 @@ public class BlogJwtSecurityFilter extends OncePerRequestFilter {
             JwtPayload jwtPayload;
 
             try {
-                jwtPayload = blogJwtUtils.decode(header.substring(0, 8));
+                jwtPayload = blogJwtUtils.decode(header.substring(BlogJwtUtils.HEADER_PREFIX.length()));
             } catch (Exception e) {
                 filterChain.doFilter(request, response);
                 return;

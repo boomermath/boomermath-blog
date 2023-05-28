@@ -44,5 +44,5 @@ public class BlogUser {
     private List<BlogArticle> ownedArticles;
 
     @ManyToMany
-    private List<BlogArticle> editableArticles;
+    private List<BlogArticle> readArticles;
 }

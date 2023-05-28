@@ -1,7 +1,7 @@
 package com.example.boomermathblog.web;
 
 
-import com.example.boomermathblog.data.dto.JwtResponse;
+import com.example.boomermathblog.data.dto.JwtToken;
 import com.example.boomermathblog.data.dto.LoginData;
 import com.example.boomermathblog.data.dto.RegisterData;
 import com.example.boomermathblog.data.entities.BlogUser;
@@ -13,17 +13,16 @@ import com.example.boomermathblog.web.security.jwt.BlogJwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Controller
 @Slf4j
+@PreAuthorize("isAnonymous()")
 public class BlogAuthController {
 
     private final BlogUserRepository blogUserRepository;
@@ -36,26 +35,18 @@ public class BlogAuthController {
         this.blogJwtUtils = blogJwtUtils;
     }
 
-    private JwtResponse securityContextFromUser(BlogUser blogUser) {
+    private JwtToken generateTokenFromUser(BlogUser blogUser) {
         String userRole = blogUser.getRole().toString();
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                blogUser.getId(), blogUser.getPassword(),
-                Collections.singletonList(() -> userRole)
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
         String jwtToken = blogJwtUtils.generate(blogUser.getId(), userRole);
 
-        return JwtResponse
+        return JwtToken
                 .builder()
                 .token(jwtToken)
                 .build();
     }
 
     @QueryMapping
-    public JwtResponse login(@Argument LoginData loginData) throws AuthenticationException {
+    public JwtToken login(@Argument LoginData loginData) throws AuthenticationException {
         String nameOrEmail = loginData.getNameOrEmail();
         Optional<BlogUser> retrievedUser = blogUserRepository.findBlogUserByUsernameOrEmail(nameOrEmail, nameOrEmail);
 
@@ -69,11 +60,11 @@ public class BlogAuthController {
             throw ExceptionBuilder.authException(AuthExceptions.INVALID_LOGIN);
         }
 
-        return securityContextFromUser(blogUser);
+        return generateTokenFromUser(blogUser);
     }
 
     @QueryMapping
-    public JwtResponse register(@Argument RegisterData registerData) throws AuthenticationException {
+    public JwtToken register(@Argument RegisterData registerData) throws AuthenticationException {
         String username = registerData.getUsername();
         String email = registerData.getEmail();
 
@@ -93,6 +84,6 @@ public class BlogAuthController {
         blogUser = blogUserRepository.save(blogUser);
         log.info("Blog user info: ");
         log.info(blogUser.toString());
-        return securityContextFromUser(blogUser);
+        return generateTokenFromUser(blogUser);
     }
 }
