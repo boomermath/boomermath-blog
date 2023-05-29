@@ -63,6 +63,10 @@ public class BlogArticle {
     @ToString.Exclude
     private List<BlogTag> tags;
 
+    @OneToMany(mappedBy = "article")
+    @ToString.Exclude
+    private List<BlogComment> comments;
+
     @ManyToMany
     @JoinTable(
             name="blog_article_editors",
@@ -78,7 +82,7 @@ public class BlogArticle {
     @LastModifiedDate
     private LocalDate lastModified;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private BlogUser author;
     @PostLoad

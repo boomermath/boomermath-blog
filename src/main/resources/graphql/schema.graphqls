@@ -2,6 +2,7 @@ type Query {
     login(loginData: LoginData!): JwtToken
     register(registerData: RegisterData!) : JwtToken
     popularArticles: [BlogArticle]
+    tagArticles(tag: String!): [BlogArticle]
 }
 
 type BlogArticle {
@@ -10,11 +11,21 @@ type BlogArticle {
     description: String
     content: String
     likes: Int,
-    author: BlogUser
+    author: BlogUser,
+    comments: [BlogComment]
 }
 
 type BlogUser {
     username: String
+}
+
+type BlogComment {
+    comment: String
+    author: BlogUser
+}
+
+type BlogTag {
+    description: String
 }
 
 input LoginData {

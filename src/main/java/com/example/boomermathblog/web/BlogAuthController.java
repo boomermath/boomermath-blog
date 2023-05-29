@@ -82,8 +82,7 @@ public class BlogAuthController {
                 .build();
 
         blogUser = blogUserRepository.save(blogUser);
-        log.info("Blog user info: ");
-        log.info(blogUser.toString());
+
         return generateTokenFromUser(blogUser);
     }
 }

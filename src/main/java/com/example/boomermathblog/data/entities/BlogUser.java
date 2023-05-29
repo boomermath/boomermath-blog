@@ -40,7 +40,7 @@ public class BlogUser {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "author")
     private List<BlogArticle> ownedArticles;
 
     @ManyToMany

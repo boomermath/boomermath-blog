@@ -1,8 +1,10 @@
 package com.example.boomermathblog;
 
 import com.example.boomermathblog.data.entities.BlogArticle;
+import com.example.boomermathblog.data.entities.BlogComment;
 import com.example.boomermathblog.data.entities.BlogUser;
 import com.example.boomermathblog.data.repositories.BlogArticleRepository;
+import com.example.boomermathblog.data.repositories.BlogCommentRepository;
 import com.example.boomermathblog.data.repositories.BlogUserRepository;
 import com.example.boomermathblog.data.values.ArticleStatus;
 import com.example.boomermathblog.data.values.UserRole;
@@ -25,7 +27,7 @@ public class BlogApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(BlogUserRepository blogUserRepository, BlogArticleRepository blogArticleRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner commandLineRunner(BlogCommentRepository blogCommentRepository, BlogUserRepository blogUserRepository, BlogArticleRepository blogArticleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             Optional<BlogUser> optionalBlogUser = blogUserRepository.findBlogUserByUsername("boomermath");
             BlogUser blogUser;
@@ -50,16 +52,15 @@ public class BlogApplication {
                     .author(blogUser)
                     .build();
 
-            BlogArticle blogArticle2 = BlogArticle.builder()
-                    .title("Second")
-                    .description("asdfasdfasdfasdfsdfasdfsafsdfasdff")
-                    .content("veyr coolas dfjasdiofjasf")
-                    .status(ArticleStatus.PUBLISHED)
+            blogArticle1 = blogArticleRepository.save(blogArticle1);
+
+            BlogComment blogComment1 = BlogComment.builder()
                     .author(blogUser)
+                    .article(blogArticle1)
+                    .comment("funny comment here")
                     .build();
 
-            blogArticleRepository.save(blogArticle1);
-            blogArticleRepository.save(blogArticle2);
+            blogCommentRepository.save(blogComment1);
         };
     }
 }

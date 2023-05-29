@@ -21,11 +21,11 @@ public class BlogComment {
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private BlogUser blogUser;
+    private BlogUser author;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private BlogArticle article;
 }
