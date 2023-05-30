@@ -2,7 +2,6 @@ type Query {
     login(loginData: LoginData!): JwtToken
     register(registerData: RegisterData!) : JwtToken
     popularArticles: [BlogArticle]
-    tagArticles(tag: String!): [BlogArticle]
 }
 
 type BlogArticle {

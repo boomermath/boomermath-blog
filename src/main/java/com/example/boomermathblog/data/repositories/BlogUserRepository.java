@@ -1,6 +1,7 @@
 package com.example.boomermathblog.data.repositories;
 
 import com.example.boomermathblog.data.entities.BlogUser;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,9 @@ import java.util.UUID;
 @Repository
 public interface BlogUserRepository extends CrudRepository<BlogUser, UUID> {
     Optional<BlogUser> findBlogUserByUsernameOrEmail(String username, String email);
+
+    @EntityGraph("User.seenArticles")
+    BlogUser findBlogUserById(UUID id);
 
     Optional<BlogUser> findBlogUserByUsername(String username);
 }

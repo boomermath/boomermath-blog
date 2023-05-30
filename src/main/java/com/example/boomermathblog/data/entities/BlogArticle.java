@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -68,11 +70,6 @@ public class BlogArticle {
     private List<BlogComment> comments;
 
     @ManyToMany
-    @JoinTable(
-            name="blog_article_editors",
-            joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
     @ToString.Exclude
     private List<BlogUser> editors;
 
@@ -80,11 +77,17 @@ public class BlogArticle {
     private LocalDate createdDate;
 
     @LastModifiedDate
-    private LocalDate lastModified;
+    private LocalDate lastModifiedDate;
 
+    @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private BlogUser author;
+
+    @LastModifiedBy
+    @ManyToOne
+    @ToString.Exclude
+    private BlogUser lastEditor;
     @PostLoad
     private void loadSlug() {
         slug = title.toLowerCase().replaceAll("\\s+", "");

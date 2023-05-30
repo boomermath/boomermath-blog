@@ -17,6 +17,17 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NamedEntityGraph(
+        name = "User.seenArticles",
+        attributeNodes = {
+                @NamedAttributeNode(value = "ownedArticles", subgraph = "Article.tags")
+        },
+        subgraphs =
+        @NamedSubgraph(
+                name = "Article.tags",
+                attributeNodes = @NamedAttributeNode(value = "tags")
+        )
+)
 public class BlogUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,6 +54,6 @@ public class BlogUser {
     @OneToMany(mappedBy = "author")
     private List<BlogArticle> ownedArticles;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<BlogArticle> readArticles;
 }

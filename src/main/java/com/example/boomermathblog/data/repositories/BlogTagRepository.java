@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BlogTagRepository extends CrudRepository<BlogTag, UUID> {
-    Optional<BlogTag> findBlogTagByDescriptionContaining(String description);
+    Optional<BlogTag> findBlogTagByNameContaining(String name);
 }

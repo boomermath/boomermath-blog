@@ -20,7 +20,7 @@ public class BlogTag {
     private UUID id;
 
     @Column(nullable = false)
-    private String description;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
