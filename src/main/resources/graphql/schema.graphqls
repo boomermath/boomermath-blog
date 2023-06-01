@@ -1,7 +1,8 @@
 type Query {
     login(loginData: LoginData!): JwtToken
     register(registerData: RegisterData!) : JwtToken
-    findArticle(slug: String!) : BlogArticle
+    getArticle(slug: String!) : BlogArticle
+    searchArticlesByQuery(articleQuery: String!, pageNumber: Int = 0, resultsPerPage: Int = 10) : BlogSearchResults
 }
 
 input LoginData {
@@ -28,7 +29,8 @@ type BlogArticle {
     content: String
     likes: Int,
     author: BlogUser,
-    comments: [BlogComment]
+    comments: [BlogComment],
+    tags: [BlogTag]
 }
 
 type BlogUser {
@@ -46,4 +48,9 @@ type BlogTag {
 
 type JwtToken {
     token: String!
+}
+
+type BlogSearchResults {
+    numberOfPages: Int
+    articles: [BlogArticle]
 }

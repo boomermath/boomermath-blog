@@ -57,9 +57,14 @@ public class BlogUser {
     private List<BlogArticle> ownedArticles = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
+    @Builder.Default
     private List<BlogArticle> readArticles = new ArrayList<>();
 
     public void addReadArticle(BlogArticle blogArticle) {
-         readArticles.add(blogArticle);
+         if (blogArticle.getAuthor() == null) {
+             blogArticle.setAuthor(this);
+         }
+
+        readArticles.add(blogArticle);
     }
 }

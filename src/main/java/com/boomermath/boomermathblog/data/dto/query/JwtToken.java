@@ -1,4 +1,4 @@
-package com.boomermath.boomermathblog.data.dto.graphql;
+package com.boomermath.boomermathblog.data.dto.query;
 
 import lombok.Builder;
 import lombok.Getter;

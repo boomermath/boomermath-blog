@@ -1,9 +1,9 @@
 package com.boomermath.boomermathblog.web;
 
 
-import com.boomermath.boomermathblog.data.dto.graphql.JwtToken;
-import com.boomermath.boomermathblog.data.dto.graphql.LoginData;
-import com.boomermath.boomermathblog.data.dto.graphql.RegisterData;
+import com.boomermath.boomermathblog.data.dto.query.JwtToken;
+import com.boomermath.boomermathblog.data.dto.query.LoginData;
+import com.boomermath.boomermathblog.data.dto.query.RegisterData;
 import com.boomermath.boomermathblog.data.entities.BlogUser;
 import com.boomermath.boomermathblog.data.repositories.BlogUserRepository;
 import com.boomermath.boomermathblog.data.values.UserRole;

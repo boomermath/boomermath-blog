@@ -58,12 +58,7 @@ public class BlogArticle {
     @Enumerated(EnumType.STRING)
     private ArticleStatus status;
 
-    @ManyToMany
-    @JoinTable(
-            name = "blog_article_tags",
-            joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
+    @ManyToMany(mappedBy = "articles")
     @Builder.Default
     @ToString.Exclude
     private List<BlogTag> tags = new ArrayList<>();

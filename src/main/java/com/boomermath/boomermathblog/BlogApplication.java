@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class BlogApplication {
     }
 
     @Bean
+    @Transactional
     public CommandLineRunner commandLineRunner(BlogCommentRepository blogCommentRepository,
                                                BlogUserRepository blogUserRepository,
                                                BlogTagRepository blogTagRepository,
