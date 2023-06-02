@@ -1,7 +1,7 @@
 package com.boomermath.boomermathblog.web;
 
-import com.boomermath.boomermathblog.exception.except.AuthException;
-import com.boomermath.boomermathblog.exception.except.BlogCustomException;
+import com.boomermath.boomermathblog.exception.AuthException;
+import com.boomermath.boomermathblog.exception.BlogCustomException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.extern.slf4j.Slf4j;

@@ -7,7 +7,7 @@ import com.boomermath.boomermathblog.data.dto.query.RegisterData;
 import com.boomermath.boomermathblog.data.entities.BlogUser;
 import com.boomermath.boomermathblog.data.repositories.BlogUserRepository;
 import com.boomermath.boomermathblog.data.values.UserRole;
-import com.boomermath.boomermathblog.exception.ExceptionBuilder;
+import com.boomermath.boomermathblog.exception.AuthException;
 import com.boomermath.boomermathblog.exception.message.AuthExceptions;
 import com.boomermath.boomermathblog.web.security.jwt.BlogJwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -33,43 +33,40 @@ public class BlogAuthController {
         this.blogJwtUtils = blogJwtUtils;
     }
 
-    private JwtToken generateTokenFromUser(BlogUser blogUser) {
+    private String generateTokenFromUser(BlogUser blogUser) {
         String userRole = blogUser.getRole().toString();
         String jwtToken = blogJwtUtils.generate(blogUser.getId(), userRole);
 
-        return JwtToken
-                .builder()
-                .token(jwtToken)
-                .build();
+        return jwtToken;
     }
 
     @QueryMapping
-    public JwtToken login(@Argument LoginData loginData) throws AuthenticationException {
+    public String login(@Argument LoginData loginData) throws AuthenticationException {
         String nameOrEmail = loginData.getNameOrEmail();
         Optional<BlogUser> retrievedUser = blogUserRepository.findBlogUserByUsernameOrEmail(nameOrEmail, nameOrEmail);
 
         if (retrievedUser.isEmpty()) {
-            throw ExceptionBuilder.authException(AuthExceptions.INVALID_LOGIN);
+            throw new AuthException(AuthExceptions.INVALID_LOGIN);
         }
 
         BlogUser blogUser = retrievedUser.get();
 
         if (!passwordEncoder.matches(loginData.getPassword(), blogUser.getPassword())) {
-            throw ExceptionBuilder.authException(AuthExceptions.INVALID_LOGIN);
+            throw new AuthException(AuthExceptions.INVALID_LOGIN);
         }
 
         return generateTokenFromUser(blogUser);
     }
 
     @QueryMapping
-    public JwtToken register(@Argument RegisterData registerData) throws AuthenticationException {
+    public String register(@Argument RegisterData registerData) throws AuthenticationException {
         String username = registerData.getUsername();
         String email = registerData.getEmail();
 
         boolean userExists = blogUserRepository.findBlogUserByUsernameOrEmail(username, email).isPresent();
 
         if (userExists) {
-            throw ExceptionBuilder.authException(AuthExceptions.USER_EXISTS);
+            throw new AuthException(AuthExceptions.USER_EXISTS);
         }
 
         BlogUser blogUser = BlogUser.builder()

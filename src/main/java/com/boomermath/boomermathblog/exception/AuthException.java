@@ -1,17 +1,17 @@
-package com.boomermath.boomermathblog.exception.except;
+package com.boomermath.boomermathblog.exception;
 
 import graphql.ErrorClassification;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
+
+import com.boomermath.boomermathblog.exception.message.AuthExceptions;
 
 import java.util.List;
 
-@Slf4j
 public class AuthException extends AuthenticationException implements GraphQLError, BlogCustomException {
-    public AuthException(String msg) {
-        super(msg);
+    public AuthException(AuthExceptions exception) {
+        super(exception.name());
     }
 
     @Override

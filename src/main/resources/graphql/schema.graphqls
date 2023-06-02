@@ -1,8 +1,8 @@
 type Query {
-    login(loginData: LoginData!): JwtToken
-    register(registerData: RegisterData!) : JwtToken
+    login(loginData: LoginData!): String
+    register(registerData: RegisterData!) : String
     getArticle(slug: String!) : BlogArticle
-    searchArticlesByQuery(articleQuery: String!, pageNumber: Int = 0, resultsPerPage: Int = 10) : BlogSearchResults
+    searchArticlesByQuery(articleQuery: ArticleQueryData!, pageNumber: Int = 0, resultsPerPage: Int = 10) : BlogSearchResults
 }
 
 input LoginData {
@@ -17,9 +17,8 @@ input RegisterData {
 }
 
 input ArticleQueryData {
-    id: String
-    title: String
-    slug: String
+    query: String
+    tags: [String]
 }
 
 type BlogArticle {

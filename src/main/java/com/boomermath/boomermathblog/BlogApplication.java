@@ -61,7 +61,7 @@ public class BlogApplication {
                     .build();
             blogUser.addReadArticle(blogArticle1);
             blogArticle1 = blogArticleRepository.save(blogArticle1);
-
+            log.info(blogArticle1.getSlug());
             BlogComment blogComment1 = BlogComment.builder()
                     .author(blogUser)
                     .article(blogArticle1)

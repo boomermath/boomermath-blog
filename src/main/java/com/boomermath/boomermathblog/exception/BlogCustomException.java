@@ -1,4 +1,4 @@
-package com.boomermath.boomermathblog.exception.except;
+package com.boomermath.boomermathblog.exception;
 
 public interface BlogCustomException {
     String getMessage();
