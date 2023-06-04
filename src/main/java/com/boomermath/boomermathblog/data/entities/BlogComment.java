@@ -2,7 +2,9 @@ package com.boomermath.boomermathblog.data.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -28,4 +30,8 @@ public class BlogComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private BlogArticle article;
+
+    @CreatedDate
+    @Setter(AccessLevel.NONE)
+    private LocalDateTime createdTimestamp;
 }

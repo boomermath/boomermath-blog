@@ -1,4 +1,4 @@
-package com.boomermath.boomermathblog.data.dto;
+package com.boomermath.boomermathblog.data.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

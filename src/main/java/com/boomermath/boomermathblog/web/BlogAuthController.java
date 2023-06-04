@@ -1,9 +1,8 @@
 package com.boomermath.boomermathblog.web;
 
 
-import com.boomermath.boomermathblog.data.dto.query.JwtToken;
-import com.boomermath.boomermathblog.data.dto.query.LoginData;
-import com.boomermath.boomermathblog.data.dto.query.RegisterData;
+import com.boomermath.boomermathblog.data.dto.request.LoginData;
+import com.boomermath.boomermathblog.data.dto.request.RegisterData;
 import com.boomermath.boomermathblog.data.entities.BlogUser;
 import com.boomermath.boomermathblog.data.repositories.BlogUserRepository;
 import com.boomermath.boomermathblog.data.values.UserRole;
@@ -35,9 +34,8 @@ public class BlogAuthController {
 
     private String generateTokenFromUser(BlogUser blogUser) {
         String userRole = blogUser.getRole().toString();
-        String jwtToken = blogJwtUtils.generate(blogUser.getId(), userRole);
 
-        return jwtToken;
+        return blogJwtUtils.generate(blogUser.getId(), userRole);
     }
 
     @QueryMapping

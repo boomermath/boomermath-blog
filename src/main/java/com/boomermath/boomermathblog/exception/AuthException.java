@@ -1,11 +1,10 @@
 package com.boomermath.boomermathblog.exception;
 
+import com.boomermath.boomermathblog.exception.message.AuthExceptions;
 import graphql.ErrorClassification;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import org.springframework.security.core.AuthenticationException;
-
-import com.boomermath.boomermathblog.exception.message.AuthExceptions;
 
 import java.util.List;
 

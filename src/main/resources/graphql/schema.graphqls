@@ -2,7 +2,7 @@ type Query {
     login(loginData: LoginData!): String
     register(registerData: RegisterData!) : String
     getArticle(slug: String!) : BlogArticle
-    searchArticlesByQuery(articleQuery: ArticleQueryData!, pageNumber: Int = 0, resultsPerPage: Int = 10) : BlogSearchResults
+    searchArticles(articleQuery: ArticleQueryData!, count: Int = 10, page: Int = 0) : BlogArticleSearchResults
 }
 
 input LoginData {
@@ -28,8 +28,8 @@ type BlogArticle {
     content: String
     likes: Int,
     author: BlogUser,
-    comments: [BlogComment],
-    tags: [BlogTag]
+    tags: [BlogTag],
+    comments(count: Int = 10, page: Int = 0) : BlogCommentResults
 }
 
 type BlogUser {
@@ -45,11 +45,12 @@ type BlogTag {
     name: String!
 }
 
-type JwtToken {
-    token: String!
+type BlogArticleSearchResults  {
+    totalPages: Int
+    articles: [BlogArticle]
 }
 
-type BlogSearchResults {
-    numberOfPages: Int
-    articles: [BlogArticle]
+type BlogCommentResults {
+    nextPage: Int
+    comments: [BlogComment]
 }

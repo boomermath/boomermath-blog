@@ -1,7 +1,7 @@
 package com.boomermath.boomermathblog.web.security.jwt;
 
 
-import com.boomermath.boomermathblog.data.dto.JwtPayload;
+import com.boomermath.boomermathblog.data.dto.request.JwtPayload;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +30,11 @@ public class BlogJwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.info("Request received");
+
+        if (request.getContextPath().equals("/graphql")) {
+            log.info("GraphQL Request Received");
+        }
+
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (header != null && header.startsWith(BlogJwtUtils.HEADER_PREFIX)) {
