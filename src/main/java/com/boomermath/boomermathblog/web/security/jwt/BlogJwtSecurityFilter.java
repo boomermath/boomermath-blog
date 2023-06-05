@@ -30,8 +30,7 @@ public class BlogJwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-
-        if (request.getContextPath().equals("/graphql")) {
+        if (request.getServletPath().contains("graphql")) {
             log.info("GraphQL Request Received");
         }
 

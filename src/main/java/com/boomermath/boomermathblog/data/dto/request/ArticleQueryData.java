@@ -1,19 +1,13 @@
 package com.boomermath.boomermathblog.data.dto.request;
 
 import com.boomermath.boomermathblog.data.entities.BlogTag;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import org.springframework.data.web.ProjectedPayload;
 
 import java.util.List;
+import java.util.Optional;
 
-@Getter
-@AllArgsConstructor
-public class ArticleQueryData {
-    private String query;
-    private List<BlogTag> tags;
-    @Getter
-    @AllArgsConstructor
-    public static class Tag {
-        private String name;
-    }
+@ProjectedPayload
+public interface ArticleQueryData {
+    Optional<String> getQuery();
+    Optional<List<BlogTag>> getBlogTags();
 }

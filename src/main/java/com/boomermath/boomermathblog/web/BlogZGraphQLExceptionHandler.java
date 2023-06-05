@@ -7,10 +7,10 @@ import graphql.GraphqlErrorBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.execution.ErrorType;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@Component
+@ControllerAdvice
 @Slf4j
 public class BlogZGraphQLExceptionHandler {
 
@@ -29,7 +29,8 @@ public class BlogZGraphQLExceptionHandler {
     public GraphQLError accessDeniedException(AccessDeniedException accessDeniedException) {
         return createAuthenticationException(accessDeniedException.getMessage());
     }
-    @ExceptionHandler
+
+    @ExceptionHandler(Exception.class)
     public GraphQLError customException(BlogCustomException blogCustomException) {
        return GraphqlErrorBuilder.newError()
                .message(blogCustomException.getMessage())
