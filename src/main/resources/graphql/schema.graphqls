@@ -3,6 +3,7 @@ type Query {
     register(registerData: RegisterData!) : String
     getArticle(slug: String!) : BlogArticle
     searchArticles(articleQuery: ArticleQueryData!, count: Int = 10, page: Int = 0) : BlogArticleSearchResults
+    testQuery(slug: String!) : BlogArticle
 }
 
 input LoginData {
@@ -39,6 +40,7 @@ type BlogUser {
 type BlogComment {
     comment: String!
     author: BlogUser
+    createdTimestamp: String!
 }
 
 type BlogTag {

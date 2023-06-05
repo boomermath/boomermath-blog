@@ -75,4 +75,32 @@ public class BlogApplication {
             blogTagRepository.save(blogTag);
         };
     }
+
+//    @Bean
+//    @Transactional
+//    public CommandLineRunner commandLineRunner2(BlogUserRepository blogUserRepository, BlogArticleRepository blogArticleRepository, BlogCommentRepository blogCommentRepository) {
+//        return args -> {
+//            Optional<BlogUser> optionalBlogUser = blogUserRepository.findBlogUserByUsername("boomermath");
+//            Optional<BlogArticle> optionalBlogArticle = blogArticleRepository.findBlogArticleBySlugAndStatus("first-2042418473", ArticleStatus.PUBLISHED);
+//
+//            if (optionalBlogArticle.isPresent() && optionalBlogUser.isPresent()) {
+//                BlogUser user = optionalBlogUser.get();
+//                BlogArticle article = optionalBlogArticle.get();
+//
+//                List<BlogComment> blogComments = new ArrayList<>();
+//
+//                for (int i = 0; i < 10000; i++) {
+//                    BlogComment comment = BlogComment.builder()
+//                            .comment("Comment number: " + i)
+//                            .author(user)
+//                            .article(article)
+//                            .build();
+//
+//                    blogComments.add(comment);
+//                }
+//
+//                blogCommentRepository.saveAll(blogComments);
+//            }
+//        };
+//    }
 }

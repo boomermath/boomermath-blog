@@ -26,6 +26,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NamedEntityGraph(
+        name = "testGraph",
+        attributeNodes = @NamedAttributeNode("comments")
+)
 public class BlogArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
