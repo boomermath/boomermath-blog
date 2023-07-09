@@ -1,7 +1,7 @@
 package com.boomermath.boomermathblog.web.security.jwt;
 
 
-import com.boomermath.boomermathblog.data.dto.request.JwtPayload;
+import com.boomermath.boomermathblog.data.input.JwtPayload;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

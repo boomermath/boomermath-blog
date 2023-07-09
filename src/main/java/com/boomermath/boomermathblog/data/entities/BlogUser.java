@@ -52,18 +52,18 @@ public class BlogUser {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @Builder.Default
     private List<BlogArticle> ownedArticles = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @Builder.Default
     private List<BlogArticle> readArticles = new ArrayList<>();
 
     public void addReadArticle(BlogArticle blogArticle) {
-         if (blogArticle.getAuthor() == null) {
-             blogArticle.setAuthor(this);
-         }
+        if (blogArticle.getAuthor() == null) {
+            blogArticle.setAuthor(this);
+        }
 
         readArticles.add(blogArticle);
     }

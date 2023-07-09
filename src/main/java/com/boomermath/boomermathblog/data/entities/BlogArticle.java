@@ -4,7 +4,6 @@ import com.boomermath.boomermathblog.data.values.ArticleStatus;
 import com.github.slugify.Slugify;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -13,7 +12,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +37,7 @@ public class BlogArticle {
 
     @NotEmpty(message = "Specify a title")
     @Size(min = 5, max = 20, message = "Title must be between 8 and 20 characters")
-    @Pattern(regexp = "[A-Za-z0-9]+", message = "Only letters and numbers are allowed!")
+    // @Pattern(regexp = "[A-Za-z0-9]+", message = "Only letters and numbers are allowed!")
     @Column(nullable = false, unique = true)
     private String title;
 
@@ -56,7 +55,7 @@ public class BlogArticle {
 
     @Column(nullable = false)
     @Builder.Default
-    private int likes = 0;
+    private Integer likes = 0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -72,16 +71,17 @@ public class BlogArticle {
     @ToString.Exclude
     private List<BlogComment> comments = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     private List<BlogUser> editors = new ArrayList<>();
 
+    @Column(updatable = false)
     @CreatedDate
-    private LocalDate createdDate;
+    private Timestamp createdDate;
 
     @LastModifiedDate
-    private LocalDate lastModifiedDate;
+    private Timestamp lastModifiedDate;
 
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
@@ -95,9 +95,9 @@ public class BlogArticle {
 
     @PreUpdate
     @PrePersist
-    private void configureSlug() {
+    private void makeSlug() {
         slug = Slugify.builder()
                 .build()
-                .slugify(title + " " + hashCode());
+                .slugify(title + " " + title.hashCode());
     }
 }

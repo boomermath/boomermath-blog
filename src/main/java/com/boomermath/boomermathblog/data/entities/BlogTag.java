@@ -23,7 +23,7 @@ public class BlogTag {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     private List<BlogArticle> articles = new ArrayList<>();

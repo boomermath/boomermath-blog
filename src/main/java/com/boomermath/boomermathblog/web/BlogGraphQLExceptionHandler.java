@@ -2,22 +2,22 @@ package com.boomermath.boomermathblog.web;
 
 import com.boomermath.boomermathblog.exception.AuthException;
 import com.boomermath.boomermathblog.exception.BlogCustomException;
+import graphql.ErrorClassification;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.execution.ErrorType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 @Slf4j
-public class BlogZGraphQLExceptionHandler {
+public class BlogGraphQLExceptionHandler {
 
     private GraphQLError createAuthenticationException(String message) {
         return GraphqlErrorBuilder.newError()
                 .message(message)
-                .errorType(ErrorType.UNAUTHORIZED)
+                .errorType(ErrorClassification.errorClassification("BAD_REQUEST"))
                 .build();
     }
     @ExceptionHandler
@@ -34,7 +34,7 @@ public class BlogZGraphQLExceptionHandler {
     public GraphQLError customException(BlogCustomException blogCustomException) {
        return GraphqlErrorBuilder.newError()
                .message(blogCustomException.getMessage())
-               .errorType(ErrorType.BAD_REQUEST)
+               .errorType(ErrorClassification.errorClassification("BAD_REQUEST"))
                .build();
     }
 }
